@@ -18,3 +18,4 @@ Example record of single event has to have the following form:
 	{Text of the note, date in format YYYY/MM/DD for irregular or MM/DD for regular}
 
 
+For some personal settings go to libs/config.py

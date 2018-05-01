@@ -8,6 +8,7 @@ from libs.misc import split_substr
 from datetime import datetime
 
 now = datetime.now()
+EVENTS = []
 
 def time_to_now(event_date):
     return event_date - now
@@ -47,7 +48,7 @@ class Event:
 		return self.text+'|'+str(self.date)
 
         def full_info(self):
-                print '\033[34m',
+                print TEXT_FORMAT,
  	        TEXT = self.text 
 	        if len(TEXT) > MAX_TEXT_WIDTH:
 	            TEXT_M = split_substr(TEXT,MAX_TEXT_WIDTH)
@@ -58,7 +59,7 @@ class Event:
 	        else: 
 	            print self.text,
 	            print (MAX_TEXT_WIDTH-len(self.text.decode('utf8')))*' ',
-                print '\033[33m',
+                print STANDARD_FORMAT,
 
 def open_regular_events(path):
     lines = open(path,'r').readlines()
@@ -95,9 +96,9 @@ def output(all):
 	    if -1 <= diff < WEEKS_DEPTH * 7 or all:
                 i.full_info()
 	        print 'at',str(now.year)+'/'+str(i.date.month)+'/'+str(i.date.day), 
-	        if diff >= 0: print "(up to\033[32m",diff,"days\033[33m",hour, "h",minute,"m)"
-                if diff < -1: print "(up to\033[32m",diff+1,"days\033[33m",hour, "h",minute,"m)"
-                if diff ==-1: print '\033[7mTODAY!\033[0m\033[33m'
+	        if diff >= 0: print "(up to"+color_warn(diff,all),diff,"days\033[33m",hour, "h",minute,"m)"
+                if diff < -1: print "(up to"+color_warn(diff,all),diff+1,"days\033[33m",hour, "h",minute,"m)"
+                if diff ==-1: print TODAY_FORMAT,'TODAY!',FORMAT_END,STANDARD_FORMAT
 	        NZE += 1
 	    
             else:
@@ -106,6 +107,22 @@ def output(all):
 
 	if NZE == 0:
 	    print " None"
+
+def color_warn(diff,all=False):
+    if all==False:
+        if 7 * WEEKS_DEPTH / 2 >= diff > 7 * WEEKS_DEPTH / 4:
+            return WARNCOLOR1
+        if diff <= 7 * WEEKS_DEPTH / 4:
+            return WARNCOLOR2
+        else:
+            return STANDARD_FORMAT
+    if all==True:
+        if diff>0 and diff <= 7 * WEEKS_DEPTH / 2:
+            return WARNCOLOR1
+        if diff < 0 and diff >= -7 * WEEKS_DEPTH / 2:
+            return WARNCOLOR2
+        else:
+            return STANDARD_FORMAT
 
 def incoming_events(all=False):
     print '\033[33m\r',
