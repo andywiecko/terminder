@@ -15,7 +15,10 @@ def split_substr(String,x=10):
 def print_line():
     print LINE_WIDTH*LINE_SYMB
 
-def print_header():
+def print_header(all=False):
 	print_line()
-	print " INCOMING EVENTS IN THE NEXT %i WEEKS:" % WEEKS_DEPTH
+	if all==False:
+		print " INCOMING EVENTS IN THE NEXT %i WEEKS:" % WEEKS_DEPTH
+	else:
+		print " ALL EVENTS IN THE DATABASE: "
 	print_line()

@@ -10,6 +10,11 @@ path2 = 'events'
 
 open_nonregular_events(path1)
 open_regular_events(path2)
+
 incoming_events()
+
+print
+
+incoming_events(all=True)
 
 

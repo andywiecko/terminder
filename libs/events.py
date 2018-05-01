@@ -82,7 +82,7 @@ def open_nonregular_events(path):
         EVENTS.append(Event(rec[0],datetime(year,month,day),0))
 
 
-def output():
+def output(all):
 	NZE = 0 # number of incoming events
 	for i in EVENTS:
 
@@ -92,11 +92,12 @@ def output():
             diff = time_to_now(event_date).days
             hour = time_to_now(event_date).seconds//3600
             minute = (time_to_now(event_date).seconds//60)%60
-	    if -1 <= diff < WEEKS_DEPTH * 7:
+	    if -1 <= diff < WEEKS_DEPTH * 7 or all:
                 i.full_info()
 	        print 'at',str(now.year)+'/'+str(i.date.month)+'/'+str(i.date.day), 
 	        if diff >= 0: print "(up to\033[32m",diff,"days\033[33m",hour, "h",minute,"m)"
-                if diff < 0: print '\033[7mTODAY!\033[0m\033[33m'
+                if diff < -1: print "(up to\033[32m",diff+1,"days\033[33m",hour, "h",minute,"m)"
+                if diff ==-1: print '\033[7mTODAY!\033[0m\033[33m'
 	        NZE += 1
 	    
             else:
@@ -106,11 +107,11 @@ def output():
 	if NZE == 0:
 	    print " None"
 
-def incoming_events():
+def incoming_events(all=False):
     print '\033[33m\r',
-    print_header()
+    print_header(all)
     EVENTS.sort()
-    output()
+    output(all)
     print_line()
 
 
