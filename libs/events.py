@@ -15,6 +15,8 @@ def time_to_now(event_date):
 def next_reg_event(date):
     temp_year = now.year
     event_date = datetime(temp_year,date.month,date.day)
+    if date.month == now.month and date.day == now.day:
+        return event_date
     while time_to_now(event_date).days < 0:
         temp_year += 1
         event_date = datetime(temp_year,date.month,date.day)
