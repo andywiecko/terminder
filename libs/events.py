@@ -90,7 +90,7 @@ def output():
             diff = time_to_now(event_date).days
             hour = time_to_now(event_date).seconds//3600
             minute = (time_to_now(event_date).seconds//60)%60
-	    if diff < WEEKS_DEPTH * 7:
+	    if -1 <= diff < WEEKS_DEPTH * 7:
                 i.full_info()
 	        print 'at',str(now.year)+'/'+str(i.date.month)+'/'+str(i.date.day), 
 	        if diff >= 0: print "(up to\033[32m",diff,"days\033[33m",hour, "h",minute,"m)"
