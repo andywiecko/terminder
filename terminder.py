@@ -3,18 +3,26 @@
 from libs.events import open_regular_events
 from libs.events import open_nonregular_events
 from libs.events import incoming_events
+import sys
 
+from optparse import OptionParser
+parser = OptionParser()
+parser.add_option("-a", "--all",default=False,\
+        action="store_true", dest="PRINT_ALL",\
+        help="print all records from database")
+
+(options, args) = parser.parse_args()
 
 path1 = 'nonreg_events'
 path2 = 'events'
 
-open_nonregular_events(path1)
-open_regular_events(path2)
+try: open_nonregular_events(path1)
+except: print "terminder error: can't load", path1
 
-incoming_events()
+try: open_regular_events(path2)
+except: print "terminder error: can't load", path2
 
-print
-
-incoming_events(all=True)
-
-
+if options.PRINT_ALL:
+    incoming_events(all=True)
+else:
+    incoming_events()

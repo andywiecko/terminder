@@ -2,7 +2,7 @@
 from datetime import datetime
 
 # event text width
-MAX_TEXT_WIDTH = 32
+MAX_TEXT_WIDTH = 33
 # decoration line width
 LINE_WIDTH = 70
 # decoration line symbol

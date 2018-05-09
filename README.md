@@ -11,7 +11,9 @@ Here is an example terminal output:
 
 Adding this script to `.bashrc` will cause that incomming events will be shown at every time when user open his consle:
 
-	echo "python terminder.py" >> ~/.bashrc
+	echo "TERMINDER_DIR=/path/to/terminder/dir" >> ~/.bashrc
+	echo "alias terminder='python $TERMINDER_DIR/terminder.py" >> ~/.bashrc
+	echo "terminder" >> ~/.bashrc
 
 Example record of single event has to have the following form:
 
@@ -19,3 +21,8 @@ Example record of single event has to have the following form:
 
 
 For some personal settings go to libs/config.py
+
+Command `terminder` in console will provide output with default configuration. 
+However, some options had been implemented:
+
+* `-e` print all events instead of default option

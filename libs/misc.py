@@ -18,7 +18,9 @@ def print_line():
 def print_header(all=False):
 	print_line()
 	if all==False:
-		print " INCOMING EVENTS IN THE NEXT %i WEEKS:" % WEEKS_DEPTH
+		print " INCOMING EVENTS IN THE NEXT %i WEEKS:" % WEEKS_DEPTH,
+                print #"  [||||||     25%             ]"
+
 	else:
 		print " ALL EVENTS IN THE DATABASE: "
 	print_line()
