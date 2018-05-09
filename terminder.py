@@ -13,7 +13,7 @@ parser.add_option("-a", "--all",default=False,\
         help="print all records from database")
 parser.add_option("-w", "--weeks",default=False,\
         action="store", dest="WEEKS",type=int,\
-        help="print all records from database")
+        help="set events weeks depth")
 
 (options, args) = parser.parse_args()
 
