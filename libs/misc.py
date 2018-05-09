@@ -1,6 +1,6 @@
 #!/bin/python
 
-from config import *
+import config
 
 def split_substr(String,x=10): 
     string = String.decode('utf8')
@@ -13,12 +13,12 @@ def split_substr(String,x=10):
     return ret
 
 def print_line():
-    print LINE_WIDTH*LINE_SYMB
+    print config.LINE_WIDTH*config.LINE_SYMB
 
 def print_header(all=False):
 	print_line()
 	if all==False:
-		print " INCOMING EVENTS IN THE NEXT %i WEEKS:" % WEEKS_DEPTH,
+		print " INCOMING EVENTS IN THE NEXT %i WEEKS:" % config.WEEKS_DEPTH,
                 print #"  [||||||     25%             ]"
 
 	else:

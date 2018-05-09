@@ -1,6 +1,6 @@
 #!/bin/python
 
-from config import *
+import config 
 from libs.misc import print_header
 from libs.misc import print_line
 from libs.misc import split_substr
@@ -48,18 +48,21 @@ class Event:
 		return self.text+'|'+str(self.date)
 
         def full_info(self):
-                print TEXT_FORMAT,
+                if self.reg == 1:
+                    print config.REG_TEXT_FORMAT,
+                else:    
+                    print config.NONREG_TEXT_FORMAT,
  	        TEXT = self.text 
-	        if len(TEXT) > MAX_TEXT_WIDTH:
-	            TEXT_M = split_substr(TEXT,MAX_TEXT_WIDTH)
+	        if len(TEXT) > config.MAX_TEXT_WIDTH:
+	            TEXT_M = split_substr(TEXT,config.MAX_TEXT_WIDTH)
 	            for j in TEXT_M[:-1]:
 	                print j
 	            print TEXT_M[-1],
-	            print (MAX_TEXT_WIDTH-len(TEXT_M[-1]))*' ',
+	            print (config.MAX_TEXT_WIDTH-len(TEXT_M[-1]))*' ',
 	        else: 
 	            print self.text,
-	            print (MAX_TEXT_WIDTH-len(self.text.decode('utf8')))*' ',
-                print STANDARD_FORMAT,
+	            print (config.MAX_TEXT_WIDTH-len(self.text.decode('utf8')))*' ',
+                print config.STANDARD_FORMAT,
 
 def open_regular_events(path):
     lines = open(path,'r').readlines()
@@ -67,9 +70,20 @@ def open_regular_events(path):
     for i in records:
         rec = i.split(',')
         date = "".join(rec[1].split()).split('/')
-        month = int(date[0])
-        day = int(date[1])
-        EVENTS.append(Event(rec[0],datetime(1,month,day)))
+
+        if len(date) == 2:
+            year = 1
+            month = int(date[0])
+            day = int(date[1])
+        if len(date) == 3:
+            year = int(date[0])
+            month = int(date[1])
+            day = int(date[2])
+
+        Event_date = datetime(year,month,day)
+        if len(date) == 3:
+            rec[0] += ' (' + str(next_reg_event(Event_date).year-year) + ')'
+        EVENTS.append(Event(rec[0],Event_date))
 
 def open_nonregular_events(path):
     lines = open(path,'r').readlines()
@@ -93,12 +107,12 @@ def output(all):
             diff = time_to_now(event_date).days
             hour = time_to_now(event_date).seconds//3600
             minute = (time_to_now(event_date).seconds//60)%60
-	    if -1 <= diff < WEEKS_DEPTH * 7 or all:
+	    if -1 <= diff < config.WEEKS_DEPTH * 7 or all:
                 i.full_info()
-	        print 'at',str(now.year)+'/'+str(i.date.month)+'/'+str(i.date.day), 
+	        print 'at',str(event_date.year)+'/'+str(i.date.month)+'/'+str(i.date.day), 
 	        if diff >= 0: print "(up to"+color_warn(diff,all),diff,"days\033[33m",hour, "h",minute,"m)"
                 if diff < -1: print "(up to"+color_warn(diff,all),diff+1,"days\033[33m",hour, "h",minute,"m)"
-                if diff ==-1: print TODAY_FORMAT,'TODAY!',FORMAT_END,STANDARD_FORMAT
+                if diff ==-1: print config.TODAY_FORMAT,'TODAY!',config.FORMAT_END,config.STANDARD_FORMAT
 	        NZE += 1
 	    
             else:
@@ -110,19 +124,19 @@ def output(all):
 
 def color_warn(diff,all=False):
     if all==False:
-        if 7 * WEEKS_DEPTH / 2 >= diff > 7 * WEEKS_DEPTH / 4:
-            return WARNCOLOR1
-        if diff <= 7 * WEEKS_DEPTH / 4:
-            return WARNCOLOR2
+        if 7 * config.WEEKS_DEPTH / 2 >= diff > 7 * config.WEEKS_DEPTH / 4:
+            return config.WARNCOLOR1
+        if diff <= 7 * config.WEEKS_DEPTH / 4:
+            return config.WARNCOLOR2
         else:
-            return STANDARD_FORMAT
+            return config.STANDARD_FORMAT
     if all==True:
-        if diff>0 and diff <= 7 * WEEKS_DEPTH / 2:
-            return WARNCOLOR1
-        if diff < 0 and diff >= -7 * WEEKS_DEPTH / 2:
-            return WARNCOLOR2
+        if diff>0 and diff <= 7 * config.WEEKS_DEPTH / 2:
+            return config.WARNCOLOR1
+        if diff < 0 and diff >= -7 * config.WEEKS_DEPTH / 2:
+            return config.WARNCOLOR2
         else:
-            return STANDARD_FORMAT
+            return config.STANDARD_FORMAT
 
 def incoming_events(all=False):
     print '\033[33m\r',
