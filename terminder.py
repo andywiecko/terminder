@@ -20,8 +20,8 @@ parser.add_option("-w", "--weeks",default=False,\
 if options.WEEKS>0:
     libs.config.WEEKS_DEPTH = options.WEEKS
 
-path1 = 'nonreg_events'
-path2 = 'events'
+path1 = libs.config.pwd+'nonreg_events'
+path2 = libs.config.pwd+'events'
 
 try: open_nonregular_events(path1)
 except: print "terminder error: can't load", path1
@@ -33,3 +33,6 @@ if options.PRINT_ALL:
     incoming_events(all=True)
 else:
     incoming_events()
+
+
+print libs.config.FORMAT_END,
